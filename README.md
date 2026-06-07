@@ -66,8 +66,6 @@ gestion_stocks/
 ## ⚙️ Installation
 
 ### 1. Cloner le projet
-git clone https://github.com/tonnom/gestion-stocks-django.git
-cd gestion-stocks-django
 
 ### 2. Créer l'environnement virtuel
 python -m venv env
