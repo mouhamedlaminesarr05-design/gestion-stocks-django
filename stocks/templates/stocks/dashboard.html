@@ -1,0 +1,61 @@
+{% extends 'stocks/base.html' %}
+{% block content %}
+<h2>Tableau de bord</h2>
+
+<div class="row mt-3">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Produits</h5>
+                <p class="card-text fs-2">{{ total_produits }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Fournisseurs</h5>
+                <p class="card-text fs-2">{{ total_fournisseurs }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Alertes Stock Bas</h5>
+                <p class="card-text fs-2">{{ alertes|length }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if alertes %}
+<div class="alert alert-warning mt-3">
+    <h5>⚠️ Produits en stock bas :</h5>
+    <ul>
+        {% for p in alertes %}
+            <li><a href="/stocks/produits/{{ p.pk }}/">{{ p.nom }}</a> — {{ p.quantite_stock }} unités restantes</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<h5 class="mt-4">Derniers mouvements</h5>
+<table class="table table-striped">
+    <thead>
+        <tr><th>Produit</th><th>Type</th><th>Quantité</th><th>Date</th></tr>
+    </thead>
+    <tbody>
+        {% for m in derniers_mouvements %}
+        <tr>
+            <td>{{ m.produit.nom }}</td>
+            <td>{{ m.get_type_mouvement_display }}</td>
+            <td>{{ m.quantite }}</td>
+            <td>{{ m.date|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">Aucun mouvement enregistré</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

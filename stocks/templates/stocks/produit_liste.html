@@ -1,0 +1,54 @@
+{% extends 'stocks/base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center">
+    <h2>Liste des Produits</h2>
+    {% if request.user.is_superuser or request.user.groups.all.0.name == 'Responsable Stock' %}
+        <a href="/stocks/produits/ajouter/" class="btn btn-primary">+ Ajouter</a>
+    {% endif %}
+</div>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Nom</th><th>Référence</th><th>Prix</th>
+            <th>Stock</th><th>Fournisseur</th><th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in produits %}
+        <tr class="{% if p.est_en_alerte %}table-danger{% endif %}">
+            <td>{{ p.nom }}</td>
+            <td>{{ p.reference }}</td>
+            <td>{{ p.prix }} FCFA</td>
+            <td>
+                {{ p.quantite_stock }}
+                {% if p.est_en_alerte %}<span class="badge bg-danger">⚠️ Stock bas</span>{% endif %}
+            </td>
+            <td>{{ p.fournisseur }}</td>
+            <td>
+                <a href="/stocks/produits/{{ p.pk }}/" class="btn btn-sm btn-info">Détail</a>
+                {% if request.user.is_superuser or request.user.groups.all.0.name == 'Responsable Stock' %}
+                    <a href="/stocks/produits/{{ p.pk }}/modifier/" class="btn btn-sm btn-warning">Modifier</a>
+                    <a href="/stocks/produits/{{ p.pk }}/supprimer/" class="btn btn-sm btn-danger">Supprimer</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">Aucun produit</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Pagination -->
+<nav>
+    <ul class="pagination">
+        {% if produits.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ produits.previous_page_number }}">Précédent</a></li>
+        {% endif %}
+        <li class="page-item active"><a class="page-link" href="#">{{ produits.number }}</a></li>
+        {% if produits.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ produits.next_page_number }}">Suivant</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}

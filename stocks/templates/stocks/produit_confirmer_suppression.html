@@ -1,0 +1,12 @@
+{% extends 'stocks/base.html' %}
+{% block content %}
+<h2>Supprimer le produit</h2>
+<div class="alert alert-danger">
+    Êtes-vous sûr de vouloir supprimer <strong>{{ produit.nom }}</strong> ?
+</div>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Confirmer la suppression</button>
+    <a href="/stocks/produits/" class="btn btn-secondary">Annuler</a>
+</form>
+{% endblock %}

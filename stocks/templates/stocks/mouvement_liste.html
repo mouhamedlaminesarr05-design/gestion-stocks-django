@@ -1,0 +1,45 @@
+{% extends 'stocks/base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center">
+    <h2>Mouvements de Stock</h2>
+    <a href="/stocks/mouvements/ajouter/" class="btn btn-primary">+ Nouveau mouvement</a>
+</div>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr><th>Produit</th><th>Type</th><th>Quantité</th><th>Date</th><th>Effectué par</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+        {% for m in mouvements %}
+        <tr>
+            <td>{{ m.produit.nom }}</td>
+            <td>
+                {% if m.type_mouvement == 'entree' %}
+                    <span class="badge bg-success">Entrée</span>
+                {% else %}
+                    <span class="badge bg-danger">Sortie</span>
+                {% endif %}
+            </td>
+            <td>{{ m.quantite }}</td>
+            <td>{{ m.date|date:"d/m/Y H:i" }}</td>
+            <td>{{ m.effectue_par.email }}</td>
+            <td>{{ m.note }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">Aucun mouvement</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination">
+        {% if mouvements.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ mouvements.previous_page_number }}">Précédent</a></li>
+        {% endif %}
+        <li class="page-item active"><a class="page-link" href="#">{{ mouvements.number }}</a></li>
+        {% if mouvements.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ mouvements.next_page_number }}">Suivant</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}

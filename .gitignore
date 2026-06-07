@@ -1,0 +1,17 @@
+# Environnement virtuel (trop lourd, inutile)
+env/
+
+# Fichiers Python compilés (inutiles)
+__pycache__/
+*.pyc
+*.pyo
+
+# Base de données SQLite (on utilise MySQL)
+db.sqlite3
+
+# Fichiers media (photos uploadées par les utilisateurs)
+media/
+
+# Fichiers secrets
+*.env
+.env
